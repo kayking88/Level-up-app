@@ -635,8 +635,11 @@ function GoalManager({ cat, goals, setGoals }) {
                     </div>
                     <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                       <span style={{ fontSize: 11, color: T.muted }}>Progress:</span>
-                      <input type="number" value={g.current} onChange={e => updateProgress(g.id, e.target.value)}
-                        style={{ width: 56, background: T.surface, border: `1px solid ${T.border}`, borderRadius: 8, padding: "4px 8px", color: T.white, fontSize: 13, outline: "none" }} />
+                      <input type="number" value={g.current === 0 ? "" : g.current}
+                        placeholder="0"
+                        onChange={e => updateProgress(g.id, e.target.value === "" ? 0 : e.target.value)}
+                        onFocus={e => e.target.select()}
+                        style={{ width: 70, background: T.surface, border: `1px solid ${T.border}`, borderRadius: 8, padding: "6px 10px", color: T.white, fontSize: 13, outline: "none" }} />
                       <span style={{ fontSize: 11, color: T.muted }}>/ {g.target} {g.unit}</span>
                       <span style={{ marginLeft: "auto", fontSize: 12, fontWeight: 700, color: cat.color }}>{pct}%</span>
                     </div>
@@ -870,9 +873,22 @@ function FinancesScreen({ goals, setGoals }) {
                 <div style={{ height: 6, background: T.faint, borderRadius: 99, overflow: "hidden", marginBottom: 8 }}>
                   <div style={{ height: "100%", width: `${pct}%`, background: `linear-gradient(90deg, ${T.gold}, ${T.pink})`, borderRadius: 99 }} />
                 </div>
-                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 10 }}>
                   <span style={{ fontSize: 12, color: T.muted }}>${s.current.toLocaleString()} / ${s.target.toLocaleString()}</span>
                   <span style={{ fontSize: 12, fontWeight: 700, color: T.gold }}>{pct}%</span>
+                </div>
+                <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                  <input
+                    type="number"
+                    defaultValue={s.current}
+                    placeholder="Update amount saved"
+                    id={`saving-${s.id}`}
+                    style={{ flex: 1, background: T.surface, border: `1px solid ${T.border}`, borderRadius: 10, padding: "9px 12px", color: T.white, fontSize: 13, outline: "none", fontFamily: "inherit" }}
+                  />
+                  <GoldBtn small onClick={() => {
+                    const val = document.getElementById(`saving-${s.id}`).value;
+                    setSavings(p => p.map(x => x.id === s.id ? { ...x, current: Number(val) || 0 } : x));
+                  }}>Update</GoldBtn>
                 </div>
               </div>
             );
