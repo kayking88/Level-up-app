@@ -149,9 +149,13 @@
     }
 
   </script>
-  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://unpkg.com/react@18.2.0/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone@7.23.5/babel.min.js"></script>
+  <script>
+    // Show loading indicator while Babel compiles
+    document.getElementById('root').innerHTML = '<div style="display:flex;align-items:center;justify-content:center;min-height:100vh;background:#111114;flex-direction:column;gap:16px"><div style="width:40px;height:40px;border:3px solid #F5C51833;border-top:3px solid #F5C518;border-radius:50%;animation:spin 1s linear infinite"></div><div style="color:#F5C518;font-family:system-ui;font-size:13px;letter-spacing:2px;text-transform:uppercase">Loading...</div></div><style>@keyframes spin{to{transform:rotate(360deg)}}</style>';
+  </script>
   <script type="text/babel" data-presets="react">
 const { useState, useEffect } = React;
 
@@ -1612,6 +1616,15 @@ function App() {
   );
 }
 ReactDOM.createRoot(document.getElementById("root")).render(React.createElement(App));
+  </script>
+  <script>
+    // Fallback: if app doesn't render within 10s, show error message
+    setTimeout(() => {
+      const root = document.getElementById('root');
+      if (root && (root.innerHTML.includes('Loading') || root.innerHTML === '')) {
+        root.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;min-height:100vh;background:#111114;flex-direction:column;gap:16px;padding:24px;text-align:center"><div style="font-size:40px;margin-bottom:8px">👑</div><div style="color:#F5C518;font-family:system-ui;font-size:18px;font-weight:800;margin-bottom:8px">MY Elevation</div><div style="color:#888899;font-family:system-ui;font-size:13px;line-height:1.6">Having trouble loading?<br>Try opening in Chrome or Safari.</div></div>';
+      }
+    }, 10000);
   </script>
 </body>
 </html>
