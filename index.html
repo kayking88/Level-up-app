@@ -10,7 +10,6 @@
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="application-name" content="MY Elevation" />
   <meta name="description" content="No Validation for MY Elevation — your 30-day companion app by Evolving Women Co." />
-  <link rel="manifest" href="manifest.json" />
   <!-- Apple touch icons (Safari Add to Home Screen) -->
   <link rel="apple-touch-icon" href="icon-192.png" />
   <title>MY Elevation — Evolving Women Co.</title>
@@ -149,22 +148,6 @@
       }
     }
 
-    // ── Service Worker (offline support) ──
-    if ('serviceWorker' in navigator) {
-      const swCode = `
-        const CACHE = 'my-elevation-v1';
-        const ASSETS = [location.href];
-        self.addEventListener('install', e => {
-          e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)));
-        });
-        self.addEventListener('fetch', e => {
-          e.respondWith(caches.match(e.request).then(r => r || fetch(e.request)));
-        });
-      `;
-      const blob = new Blob([swCode], { type: 'application/javascript' });
-      const swUrl = URL.createObjectURL(blob);
-      navigator.serviceWorker.register(swUrl).catch(() => {});
-    }
   </script>
   <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
